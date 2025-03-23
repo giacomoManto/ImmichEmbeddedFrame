@@ -1,6 +1,5 @@
 import requests
 import logging
-import json
 
 
 class Immich:
