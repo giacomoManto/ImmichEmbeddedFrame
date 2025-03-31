@@ -1,7 +1,7 @@
 from immich import Immich
 import os
 from dotenv import load_dotenv
-# import epd7in3e
+import epd7in3e
 from PIL import Image
 
 if not os.path.exists("assets/original/"):
@@ -120,9 +120,9 @@ for photo in os.listdir("assets/original/"):
 epd = epd7in3e.EPD()
 epd.init()
 epd.Clear()
-logging.info("1.read bmp file")
+print("1.read bmp file")
 
 bmp_image = Image.open("/assets/processed/2A17C0D9-DA24-4D74-8EF2-F7DF3260B709.bmp")
 
-logging.info("2.display image")
+print("2.display image")
 epd.display(epd.getbuffer(bmp_image))
