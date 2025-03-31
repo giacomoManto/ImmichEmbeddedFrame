@@ -16,8 +16,9 @@ if not os.path.exists("assets/processed/"):
 
 EPD_WIDTH = epd7in3e.EPD_WIDTH
 EPD_HEIGHT = epd7in3e.EPD_HEIGHT
+EPD_ASPECT = float(EPD_WIDTH) / float(EPD_HEIGHT)
 
-def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode="crop"):
+def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode="crop", rotate=True):
     """
     Applies an .act color palette to an image, resizes it to 800x480, 
     and saves it as a bitmap.
@@ -29,6 +30,13 @@ def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode
     
     # Step 1: Open the image and resize to 800x480
     img = Image.open(image_path).convert("RGB")
+    
+    aspect =  float(img.width) / float(img.height)
+    rotatedAspect = 1.0/aspect
+    
+    if rotate:
+        if abs(rotatedAspect - EPD_ASPECT) < abs(aspect - EPD_ASPECT):
+            img = img.rotate(90)
 
     VALID_RATIO_MODES = ["maintain", "stretch", "crop"]
     if ratio_mode not in VALID_RATIO_MODES:
