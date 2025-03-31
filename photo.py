@@ -10,10 +10,9 @@ if not os.path.exists("assets/original/"):
 if not os.path.exists("assets/processed/"):   
     os.makedirs("assets/processed/")
 
-# EPD_WIDTH = epd7in3e.EPD_WIDTH
-# EPD_HEIGHT = epd7in3e.EPD_HEIGHT
-EPD_WIDTH = 800
-EPD_HEIGHT = 480
+EPD_WIDTH = epd7in3e.EPD_WIDTH
+EPD_HEIGHT = epd7in3e.EPD_HEIGHT
+
 def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode="crop"):
     """
     Applies an .act color palette to an image, resizes it to 800x480, 
@@ -106,16 +105,24 @@ server = Immich(x_api_key, url)
 
 album = server.getAlbumInfoByName("Photo Frame")
 for photo in album["assets"]:
-    with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
-        f.write(server.downloadAsset(photo["id"]))
+    if photo not in os.listdir("assets/original"):
+        with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
+            f.write(server.downloadAsset(photo["id"]))
         
 for photo in os.listdir("assets/original/"):
-    if photo not in os.listdir("assets/processed"):
+    if photo not in os.listdir():
         apply_act_palette(os.path.join("assets/original/", photo), "6-color.act", os.path.join("assets/processed/", photo.split(".")[0] + ".bmp"))
         print(f"Processed {photo}")
     else:
         print(f"Already processed {photo}")
         
         
-# epd = epd7in3e.EPD()
-# epd.init()
+epd = epd7in3e.EPD()
+epd.init()
+epd.Clear()
+logging.info("1.read bmp file")
+
+bmp_image = Image.open("/assets/processed/2A17C0D9-DA24-4D74-8EF2-F7DF3260B709.bmp")
+
+logging.info("2.display image")
+epd.display(epd.getbuffer(bmp_image))
