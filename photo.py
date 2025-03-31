@@ -105,12 +105,13 @@ server = Immich(x_api_key, url)
 
 album = server.getAlbumInfoByName("Photo Frame")
 for photo in album["assets"]:
-    if photo not in os.listdir("assets/original"):
+    if os.path.basename(photo["originalPath"]) not in os.listdir("assets/original"):
+        print(f"Downloading {photo['originalPath']}")
         with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
             f.write(server.downloadAsset(photo["id"]))
         
 for photo in os.listdir("assets/original/"):
-    if photo not in os.listdir():
+    if photo.split(".")[0] + ".bmp" not in os.listdir("assets/processed/"):
         apply_act_palette(os.path.join("assets/original/", photo), "6-color.act", os.path.join("assets/processed/", photo.split(".")[0] + ".bmp"))
         print(f"Processed {photo}")
     else:
