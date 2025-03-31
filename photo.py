@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import epd7in3e
 from PIL import Image
+import time
 
 if not os.path.exists("assets/original/"):
     os.makedirs("assets/original/")
@@ -110,7 +111,7 @@ for photo in album["assets"]:
         with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
             f.write(server.downloadAsset(photo["id"]))
     else:
-        print(f"Already downloaded {photo['originalPath']}")
+        print("Already downloaded " + os.path.basename(photo["originalPath"]))
         
 for photo in os.listdir("assets/original/"):
     if photo.split(".")[0] + ".bmp" not in os.listdir("assets/processed/"):
@@ -125,7 +126,9 @@ epd.init()
 epd.Clear()
 print("1.read bmp file")
 
-bmp_image = Image.open("assets/processed/2A17C0D9-DA24-4D74-8EF2-F7DF3260B709.bmp")
-
-print("2.display image")
-epd.display(epd.getbuffer(bmp_image))
+for image in os.listdir("assets/processed/"):
+    print(f"Displaying {image}")
+    epd.display(epd.getbuffer(Image.open(os.path.join("assets/processed/", image))))
+    time.sleep(10)
+    
+epd.sleep()
