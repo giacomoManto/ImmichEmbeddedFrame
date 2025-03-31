@@ -109,6 +109,8 @@ for photo in album["assets"]:
         print(f"Downloading {photo['originalPath']}")
         with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
             f.write(server.downloadAsset(photo["id"]))
+    else:
+        print(f"Already downloaded {photo['originalPath']}")
         
 for photo in os.listdir("assets/original/"):
     if photo.split(".")[0] + ".bmp" not in os.listdir("assets/processed/"):
@@ -123,7 +125,7 @@ epd.init()
 epd.Clear()
 print("1.read bmp file")
 
-bmp_image = Image.open("/assets/processed/2A17C0D9-DA24-4D74-8EF2-F7DF3260B709.bmp")
+bmp_image = Image.open("assets/processed/2A17C0D9-DA24-4D74-8EF2-F7DF3260B709.bmp")
 
 print("2.display image")
 epd.display(epd.getbuffer(bmp_image))
