@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 import epd7in3e
 from PIL import Image
 import time
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
 
 if not os.path.exists("assets/original/"):
     os.makedirs("assets/original/")
@@ -111,7 +114,7 @@ for photo in album["assets"]:
         with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
             f.write(server.downloadAsset(photo["id"]))
     else:
-        print("Already downloaded " + os.path.basename(photo["originalPath"]))
+        print(f"Already downloaded " + os.path.basename(photo["originalPath"]))
         
 for photo in os.listdir("assets/original/"):
     if photo.split(".")[0] + ".bmp" not in os.listdir("assets/processed/"):
