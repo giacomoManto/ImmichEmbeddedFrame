@@ -36,7 +36,7 @@ def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode
     
     if rotate:
         if abs(rotatedAspect - EPD_ASPECT) < abs(aspect - EPD_ASPECT):
-            img = img.rotate(90)
+            img = img.rotate(90, expand=True)
 
     VALID_RATIO_MODES = ["maintain", "stretch", "crop"]
     if ratio_mode not in VALID_RATIO_MODES:
