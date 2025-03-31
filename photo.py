@@ -18,7 +18,7 @@ EPD_WIDTH = epd7in3e.EPD_WIDTH
 EPD_HEIGHT = epd7in3e.EPD_HEIGHT
 EPD_ASPECT = float(EPD_WIDTH) / float(EPD_HEIGHT)
 
-def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode="crop", rotate=True):
+def apply_act_palette(image_path, act_path, output_path="output.bmp", ratio_mode="maintain", rotate=True):
     """
     Applies an .act color palette to an image, resizes it to 800x480, 
     and saves it as a bitmap.
