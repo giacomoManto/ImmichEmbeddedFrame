@@ -108,7 +108,11 @@ url = "http://mantovanellinet:2283"
 server = Immich(x_api_key, url)
 
 album = server.getAlbumInfoByName("Photo Frame")
+
+photoList = []
+
 for photo in album["assets"]:
+    photoList.append(os.path.basename(photo["originalPath"]).split(".")[0])
     if os.path.basename(photo["originalPath"]) not in os.listdir("assets/original"):
         print(f"Downloading {photo['originalPath']}")
         with open("assets/original/" + os.path.basename(photo["originalPath"]), "wb+") as f:
@@ -123,6 +127,13 @@ for photo in os.listdir("assets/original/"):
     else:
         print(f"Already processed {photo}")
         
+for photo in os.listdir("assets/original"):
+    name = photo.split(".")[0]
+    if name not in photoList:
+        print(f"Removing {name}")
+        os.remove(os.path.join("assets/original/", photo))
+        os.remove(os.path.join("assets/processed/", name + ".bmp"))
+
         
 epd = epd7in3e.EPD()
 epd.init()
