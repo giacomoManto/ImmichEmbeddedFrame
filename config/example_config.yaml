@@ -1,0 +1,5 @@
+server_address: "https://primary.server.com/api"
+backup_address: "https://backup.server.com/api"
+x_api_key: "YOUR_API_KEY_HERE"
+album_name: "My Album Name"
+display_manager: "epd7in3e"
