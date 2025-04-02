@@ -36,8 +36,8 @@ This setup has been tested exclusively with a rasberry pi zero 2w displaying to 
 
 ### Example Photo Credits
 
-![](example\original\sergio-kian-unsplash.jpg)<br>
+[sergio-kian-unsplash.jpg](example\original\sergio-kian-unsplash.jpg)<br>
 by <a href="https://unsplash.com/@sergiokian?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Sergio Kian</a> on <a href="https://unsplash.com/photos/mountains-rise-above-a-hazy-forested-landscape-bCPxqVjC5uc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a><br>
-![](example\original\karsten-winegeart-unsplash.jpg)<br>by <a href="https://unsplash.com/@karsten116?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Karsten Winegeart</a> on <a href="https://unsplash.com/photos/dramatic-mountains-under-a-cloudy-moody-sky-9DyNN_Yz2yk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a><br>
-![](example\original\simon-berger-unsplash.jpg)<br>by <a href="https://unsplash.com/@simon_berger?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Simon Berger</a> on <a href="https://unsplash.com/photos/a-branch-of-a-tree-with-pink-flowers-lCjH6ZOBhXs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+[karsten-winegeart-unsplash.jpg](example\original\karsten-winegeart-unsplash.jpg)<br>by <a href="https://unsplash.com/@karsten116?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Karsten Winegeart</a> on <a href="https://unsplash.com/photos/dramatic-mountains-under-a-cloudy-moody-sky-9DyNN_Yz2yk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a><br>
+[simon-berger-unsplash.jpg](example\original\simon-berger-unsplash.jpg)<br>by <a href="https://unsplash.com/@simon_berger?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Simon Berger</a> on <a href="https://unsplash.com/photos/a-branch-of-a-tree-with-pink-flowers-lCjH6ZOBhXs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
       
