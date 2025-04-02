@@ -30,7 +30,6 @@ class Virtual7in3e(BaseDisplayManager):
             self.thread = threading.Thread(target=self._display_loop, daemon=True)
             self.shutdown_thread = False
             self.thread.start()
-        self.clear()
     
     def _display_loop(self):
         cv2.namedWindow(self.windowName, cv2.WINDOW_KEEPRATIO)

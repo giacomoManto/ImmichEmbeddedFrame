@@ -1,6 +1,7 @@
 from display.drivers import epd7in3e
 from ..base_display_manager import BaseDisplayManager
 from utils.logging_setup import setup_logger
+from PIL import Image
 
 import os
 
@@ -28,9 +29,7 @@ class EPD7IN3E_MANAGER(BaseDisplayManager):
     
     def display(self, imagePath):
         self.logger.info(f"Displaying image {imagePath} on EPD7IN3E display")
-        with open(imagePath, "rb") as file:
-            image = file.read()
-        self.epd.display(image)
+        self.epd.display(self.epd.getbuffer(Image.open(imagePath)))
     
     def sleep(self):
         self.logger.info("Sleeping EPD7IN3E display")

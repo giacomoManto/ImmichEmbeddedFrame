@@ -57,6 +57,7 @@ def main():
     for image in images:
         test.display_manager.display(image)
         time.sleep(20)
+    test.display_manager.sleep()
 
 if __name__ == "__main__":
     main()
