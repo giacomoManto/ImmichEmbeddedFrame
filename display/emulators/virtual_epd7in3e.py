@@ -73,4 +73,4 @@ class Virtual7in3e(BaseDisplayManager):
 
     
     def get_act_path(self) -> str:
-        return os.path.join(os.path.dirname(os.path.dirname(__file__)), "act", "6-color.act")
+        return None

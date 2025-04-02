@@ -2,7 +2,7 @@
 server_address: "https://primary.server.com/"
 x_api_key: "YOUR_API_KEY_HERE"
 album_name: "My Album Name"
-display_manager: "epd7in3e"
+display_manager: "epd7in3e_emulator"
 
 # optional settings
 backup_address: "https://backup.server.com/" # optional
@@ -11,5 +11,5 @@ backup_address: "https://backup.server.com/" # optional
 album_fetch_interval: 60 # optional, in seconds defaults to 60
 clear_interval: 3600 # optional, in seconds defaults to 3600 (1 hour)
 photo_interval: 30 # optional, in seconds defaults to 60
-photo_storage: "/var/cache/eink-daemon" # optional, defaults to /var/cache/eink-daemon
-log_file: "/var/log/eink-daemon.log" # optional, defaults to /var/log/eink-daemon.log
+photo_storage: "./example/" # optional, defaults to ./cache/eink-daemon
+log_file: "/example.log" # optional, defaults to /var/log/eink-daemon.log

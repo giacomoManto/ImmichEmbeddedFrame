@@ -17,9 +17,9 @@ class ConfigKeys(enum.Enum):
     PHOTO_STORAGE = "photo_storage"
     LOG_FILE = "log_file"
 
-def get_config():    
+def get_config(path = "config.yaml"):    
     # Load and parse the config.yaml file
-    config_file_path = os.path.join(os.path.dirname(__file__), "config.yaml")
+    config_file_path = os.path.join(os.path.dirname(__file__), path)
 
     with open(config_file_path, "r") as file:
         config = yaml.safe_load(file)

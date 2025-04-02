@@ -13,12 +13,17 @@ class ImageProcessor:
         self.ratio_mode = ratio_mode
         register_heif_opener()
         
-        # Load ACT color palette
-        with open(act_path, "rb") as f:
-            act_data = f.read()
-            if len(act_data) < 768:
-                raise ValueError("Invalid .act file: must contain at least 768 bytes (256 RGB triplets).")
-            self.palette = [tuple(act_data[i:i+3]) for i in range(0, 768, 3)]
+        if act_path is not None:
+            # Load ACT color palette
+            with open(act_path, "rb") as f:
+                act_data = f.read()
+                if len(act_data) < 768:
+                    raise ValueError("Invalid .act file: must contain at least 768 bytes (256 RGB triplets).")
+                self.palette = [tuple(act_data[i:i+3]) for i in range(0, 768, 3)]
+        else:
+            # Default to no pallete
+            self.palette = None
+            self.logger.warning("No ACT color palette provided, bypassing palette.")
         
 
     def apply_act_palette(self, image_path, output_path):
@@ -68,12 +73,13 @@ class ImageProcessor:
                 img = img.resize((self.width, self.height), Image.LANCZOS)
                 self.logger.debug("Cropped image to match aspect ratio")
 
-            palette_img = Image.new("P", (1, 1))
-            palette_img.putpalette([value for rgb in self.palette for value in rgb])
-            
-            # Apply palette
-            img = img.quantize(palette=palette_img, dither=Image.FLOYDSTEINBERG)
-            self.logger.debug("Applied ACT color palette")
+            if self.palette is not None:
+                palette_img = Image.new("P", (1, 1))
+                palette_img.putpalette([value for rgb in self.palette for value in rgb])
+                
+                # Apply palette
+                img = img.quantize(palette=palette_img, dither=Image.FLOYDSTEINBERG)
+                self.logger.debug("Applied ACT color palette")
 
             # Save final image
             img.save(output_path, "BMP")
