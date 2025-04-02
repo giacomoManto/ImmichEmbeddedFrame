@@ -1,11 +1,11 @@
 # required settings
-server_address: "https://primary.server.com/"
+server_address: "https://demo.immich.app/"
 x_api_key: "YOUR_API_KEY_HERE"
-album_name: "My Album Name"
+album_name: "Test"
 display_manager: "epd7in3e_emulator"
 
 # optional settings
-backup_address: "https://backup.server.com/" # optional
+#backup_address: "https://backup.server.com/" # optional
 
 # optional settings with defaults
 album_fetch_interval: 60 # optional, in seconds defaults to 60
