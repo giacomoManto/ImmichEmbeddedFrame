@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class DisplayManager(ABC):
+class BaseDisplayManager(ABC):
     @abstractmethod
     def get_width(self):
         return

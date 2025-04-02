@@ -1,4 +1,4 @@
-from display.display_manager import DisplayManager
+from display.base_display_manager import BaseDisplayManager
 import os
 import cv2
 import time
@@ -8,7 +8,7 @@ from utils.logging_setup import setup_logger
 import threading
 logger = setup_logger(__name__)
 
-class Virtual7in3e(DisplayManager):
+class Virtual7in3e(BaseDisplayManager):
     def __init__(self, width=800, height=480):
         self.width = width
         self.height = height

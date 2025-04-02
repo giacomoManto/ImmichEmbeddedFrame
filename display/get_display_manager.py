@@ -1,5 +1,5 @@
 import enum
-from display.display_manager import DisplayManager
+from display.base_display_manager import BaseDisplayManager
 from utils.logging_setup import setup_logger
 
 logger = setup_logger(__name__)
@@ -9,7 +9,7 @@ class SupportedWrappers(enum.Enum):
     epd7in3e_emulator = "epd7in3e_emulator"
     
 
-def get_display_manager(wrapper: str) -> DisplayManager:
+def get_display_manager(wrapper: str) -> BaseDisplayManager:
     logger.info(f"Initializing display manager for {wrapper}")
     if wrapper == SupportedWrappers.epd7in3e.name:
         from display.wrappers.epd7in3e_wrapper import EPD7IN3E_MANAGER

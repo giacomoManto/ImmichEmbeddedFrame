@@ -1,9 +1,9 @@
 from display.drivers import epd7in3e
-from ..display_manager import DisplayManager
+from ..base_display_manager import BaseDisplayManager
 
 import os
 
-class EPD7IN3E_MANAGER(DisplayManager):
+class EPD7IN3E_MANAGER(BaseDisplayManager):
     def __init__(self):
         self.WIDTH = epd7in3e.EPD_WIDTH
         self.HEIGHT = epd7in3e.EPD_HEIGHT
@@ -22,7 +22,9 @@ class EPD7IN3E_MANAGER(DisplayManager):
     def clear(self):
         self.epd.Clear()
     
-    def display(self, image):
+    def display(self, imagePath):
+        with open(imagePath, "rb") as file:
+            image = file.read()
         self.epd.display(image)
     
     def sleep(self):
