@@ -53,9 +53,10 @@ def main():
     test = ImmichDisplayDaemon()
     images = test.image_fetcher.download_and_process()
     test.display_manager.init()
+    test.display_manager.clear()
     for image in images:
         test.display_manager.display(image)
-        time.sleep(10)
+        time.sleep(20)
 
 if __name__ == "__main__":
     main()
