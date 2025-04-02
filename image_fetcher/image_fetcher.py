@@ -21,10 +21,22 @@ class ImageFetcher:
 
         os.makedirs(self.originals_path, exist_ok=True)
         os.makedirs(self.processed_path, exist_ok=True)
+        self.load_local()
+        
+    def load_local(self):
+        self.logger.info("Loading local assets")
+        for photo in os.listdir(self.originals_path):
+            file_name, file_extension = os.path.splitext(photo)
+            if file_name not in self.asset_ids_and_extensions:
+                self.asset_ids_and_extensions[file_name] = file_extension
+                self.logger.info(f"Loaded {photo} from originals")
         
     def download_and_process(self) -> list[str]:
+        self.load_local()
         self.download()
+        self.load_local()
         self.purge_local()
+        self.load_local()
         self.process()
         
         img_paths = []
@@ -45,11 +57,12 @@ class ImageFetcher:
                     self.logger.error(f"Error removing file: {e}")
         for photo in os.listdir(self.processed_path):
             file_name, file_extension = os.path.splitext(photo)
-            try:
-                os.remove(os.path.join(self.processed_path, file_name + ".bmp"))
-                self.logger.debug(f"Removed {file_name + '.bmp'} from processed")
-            except Exception as e:
-                self.logger.error(f"Error removing file: {e}")
+            if file_name not in keys:
+                try:
+                    os.remove(os.path.join(self.processed_path, file_name + ".bmp"))
+                    self.logger.debug(f"Removed {file_name + '.bmp'} from processed")
+                except Exception as e:
+                    self.logger.error(f"Error removing file: {e}")
                     
     def download(self):
         self.logger.info("Downloading assets from server")
@@ -59,9 +72,6 @@ class ImageFetcher:
                 with open(os.path.join(self.originals_path, id+extension), "wb+") as f:
                     f.write(self.server.downloadAsset(id))
                     self.logger.info(f"Downloaded {id} to {self.originals_path}")
-        
-        self.asset_ids_and_extensions = server_set
-        self.logger.debug("Updated local asset IDs")
 
     def process(self):
         self.logger.info("Processing images")

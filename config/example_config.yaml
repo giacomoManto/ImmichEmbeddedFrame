@@ -1,15 +1,15 @@
 # required settings
-server_address: "https://primary.server.com/api"
+server_address: "https://primary.server.com/"
 x_api_key: "YOUR_API_KEY_HERE"
 album_name: "My Album Name"
 display_manager: "epd7in3e"
 
 # optional settings
-backup_address: "https://backup.server.com/api" # optional
+backup_address: "https://backup.server.com/" # optional
 
 # optional settings with defaults
 album_fetch_interval: 60 # optional, in seconds defaults to 60
 clear_interval: 3600 # optional, in seconds defaults to 3600 (1 hour)
 photo_interval: 30 # optional, in seconds defaults to 60
 photo_storage: "/var/cache/eink-daemon" # optional, defaults to /var/cache/eink-daemon
-log_file: /var/log/eink-daemon.log # optional, defaults to /var/log/eink-daemon.log
+log_file: "/var/log/eink-daemon.log" # optional, defaults to /var/log/eink-daemon.log
