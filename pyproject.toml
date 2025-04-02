@@ -18,5 +18,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "opencv-python>=4.11.0.86",
     "ruff>=0.11.2",
 ]

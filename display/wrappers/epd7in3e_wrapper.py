@@ -10,10 +10,10 @@ class EPD7IN3E_MANAGER(DisplayManager):
         self.epd = epd7in3e.EPD()
         
         
-    def width(self):
+    def get_width(self):
         return self.WIDTH
     
-    def height(self):
+    def get_height(self):
         return self.HEIGHT
     
     def init(self):

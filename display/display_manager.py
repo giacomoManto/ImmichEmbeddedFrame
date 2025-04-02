@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 class DisplayManager(ABC):
     @abstractmethod
-    def width(self):
+    def get_width(self):
         return
 
     @abstractmethod
-    def height(self):
+    def get_height(self):
         return
     
     def aspect(self):

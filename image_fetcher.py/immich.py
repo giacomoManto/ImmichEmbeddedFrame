@@ -1,6 +1,5 @@
 import requests
-import logging
-
+from utils import logging_setup
 
 class Immich:
     """
@@ -22,14 +21,10 @@ class Immich:
             'Accept': 'application/json',
             'x-api-key': self.x_api_key
         }
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        file_handler = logging.FileHandler('frame.log')
-        file_handler.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        self.logger.addHandler(file_handler)
-        self.logger.info("Immich API initialized.")
+        self.logger = logging_setup.setup_logger(__name__)
+        self.logger.info("Immich API initialized with URL: {}".format(self.url))
+        if backup_url:
+            self.logger.info("Immich API Backup URL: {}".format(self.backup_url))
         
     def makeRequest(self, method: str, endpoint: str, data: dict = None):
         """Makes a request to the Immich API. Handles error checking.

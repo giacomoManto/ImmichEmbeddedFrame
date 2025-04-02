@@ -5,7 +5,7 @@ import display.drivers.epd7in3e as epd7in3e
 from PIL import Image
 import time
 from pillow_heif import register_heif_opener
-from photoprocessing.ConvertTo6Color import apply_act_palette
+from photo_processing.ConvertTo6Color import apply_act_palette
 
 register_heif_opener()
 
