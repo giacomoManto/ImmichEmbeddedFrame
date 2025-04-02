@@ -37,7 +37,8 @@ class ImmichDisplayDaemon:
                 processor=ImageProcessor(
                     act_path=self.display_manager.get_act_path(),
                     width=self.display_manager.get_width(),
-                    height=self.display_manager.get_height()
+                    height=self.display_manager.get_height(),
+                    rotate=False,
                 ),
                 data_path=self.config[ConfigKeys.PHOTO_STORAGE.value],
                 server=self.server

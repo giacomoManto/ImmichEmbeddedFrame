@@ -5,10 +5,12 @@ from pillow_heif import register_heif_opener
 
 
 class ImageProcessor:
-    def __init__(self, act_path, width, height):
+    def __init__(self, act_path, width, height, rotate, ratio_mode="maintain"):
         self.logger = setup_logger(__name__)
         self.width = width
         self.height = height
+        self.rotate = rotate
+        self.ratio_mode = ratio_mode
         register_heif_opener()
         
         # Load ACT color palette
@@ -19,7 +21,7 @@ class ImageProcessor:
             self.palette = [tuple(act_data[i:i+3]) for i in range(0, 768, 3)]
         
 
-    def apply_act_palette(self, image_path, output_path, ratio_mode="crop", rotate=True):
+    def apply_act_palette(self, image_path, output_path):
         """Converts a given photo at image_path to given act color pallet and saves to output_path."""
         
         self.logger.info(f"Processing image: {image_path}")
@@ -31,15 +33,15 @@ class ImageProcessor:
             aspect = float(img.width) / float(img.height)
             rotated_aspect = 1.0 / aspect
 
-            if rotate and abs(rotated_aspect - (self.width / self.height)) < abs(aspect - (self.width / self.height)):
+            if self.rotate and abs(rotated_aspect - (self.width / self.height)) < abs(aspect - (self.width / self.height)):
                 img = img.rotate(90, expand=True)
                 self.logger.debug("Rotated image to better fit aspect ratio")
 
-            if ratio_mode not in ["maintain", "stretch", "crop"]:
-                raise ValueError(f"Invalid ratio mode: {ratio_mode}")
+            if self.ratio_mode not in ["maintain", "stretch", "crop"]:
+                raise ValueError(f"Invalid ratio mode: {self.ratio_mode}")
 
             # Resize logic
-            if ratio_mode == "maintain":
+            if self.ratio_mode == "maintain":
                 img.thumbnail((self.width, self.height), Image.LANCZOS)
                 new_img = Image.new("RGB", (self.width, self.height), (255, 255, 255))
                 paste_x = (self.width - img.width) // 2
@@ -48,11 +50,11 @@ class ImageProcessor:
                 img = new_img
                 self.logger.debug("Maintained aspect ratio with padding")
             
-            elif ratio_mode == "stretch":
+            elif self.ratio_mode == "stretch":
                 img = img.resize((self.width, self.height), Image.LANCZOS)
                 self.logger.debug("Stretched image to fit dimensions")
             
-            elif ratio_mode == "crop":
+            elif self.ratio_mode == "crop":
                 img_aspect = img.width / img.height
                 display_aspect = self.width / self.height
 
