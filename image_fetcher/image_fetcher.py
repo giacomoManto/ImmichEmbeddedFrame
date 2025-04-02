@@ -46,7 +46,8 @@ class ImageFetcher:
             
     
     def purge_local(self):
-        keys = self.asset_ids_and_extensions.keys()
+        self.logger.debug("Purging local assets")
+        keys = self.search_handler.search(self.server).keys()
         for photo in os.listdir(self.originals_path):
             file_name, file_extension = os.path.splitext(photo)
             if file_name not in keys:
