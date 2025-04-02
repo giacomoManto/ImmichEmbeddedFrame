@@ -2,7 +2,6 @@ import time
 from utils.logging_setup import setup_logger
 from config.config_handler import get_config, ConfigKeys
 from display.get_display_manager import get_display_manager
-from image_fetcher.immich import Immich
 from image_fetcher.mock_image_fetcher import MockImageFetcher
 from image_fetcher.search_handlers.album_search_handler import AlbumSearchHandler
 from photo_processing.ImageProcessor import ImageProcessor
