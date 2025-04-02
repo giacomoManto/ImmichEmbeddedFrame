@@ -5,7 +5,7 @@ from pillow_heif import register_heif_opener
 
 
 class ImageProcessor:
-    def __init__(self, act_path, width, height, rotate, ratio_mode="maintain"):
+    def __init__(self, act_path, width, height, rotate, ratio_mode="crop"):
         self.logger = setup_logger(__name__)
         self.width = width
         self.height = height
