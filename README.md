@@ -10,13 +10,14 @@ Take a look at [example_config.yaml](config/example_config.yaml) and [get_config
 
 ## To Do
 
+1. FIGURE OUT A BETTER WAY TO STORE IMAGES CURRENT WAY IS BUSTED
 1. Complete [daemon/main.py](daemon/main.py) to be runnable as both a daemon and a script.
-2. Add threading to [daemon/main.py](daemon/main.py) to more effectively handle both display and image fetching/processing.
-3. Add socket listening to send commands while running in background.
-4. Improve customizability of photo order/display
-5. Make log output to file (if specified) when not running in background.
-6. Handle changing image_processing modes (e.g. rotate=True, "maintain"...) on the fly.
-7. (Maybe) Add Clock
+1. Add threading to [daemon/main.py](daemon/main.py) to more effectively handle both display and image fetching/processing.
+1. Add socket listening to send commands while running in background.
+1. Improve customizability of photo order/display
+1. Make log output to file (if specified) when not running in background.
+1. Handle changing image_processing modes (e.g. rotate=True, "maintain"...) on the fly.
+1. (Maybe) Add Clock
 
 ## Current Hardware
 
