@@ -1,6 +1,6 @@
 import time
 import os
-import threading
+import asyncio
 from utils.logging_setup import setup_logger
 from config.config_handler import get_config, ConfigKeys
 from display.get_display_manager import get_display_manager
@@ -50,11 +50,11 @@ class ImmichDisplayDaemon:
             
             # Initialize threading
             self.images = []
-            self.data_lock = threading.Lock()
+            self.data_lock = asyncio.Lock()
             
             self._display_index = 0
-            self._clearTime = 0
-            self._startTime = 0
+            self._clear_time = 0
+            self._display_time = 0
             
             # Set up successful
             self.logger.info("ImmichDisplayDaemon initialized successfully.")
@@ -62,69 +62,74 @@ class ImmichDisplayDaemon:
             self.logger.error(f"Error initializing ImmichDisplayDaemon: {e}")
             raise
         
-    def stop_threads(self):
+    async def stop_threads(self):
             self.running = False
             self.logger.info("Setting stop flag")
             
-    def run(self):
+    async def run(self):
         self.logger.info("Running first startup.")
         self.running = True
         
-        signal.signal(signal.SIGINT, lambda sig, frame: self.stop_threads())
-        signal.signal(signal.SIGTERM, lambda sig, frame: self.stop_threads())
+        loop = asyncio.get_event_loop()
+        signal.signal(signal.SIGINT, lambda s, f: asyncio.run_coroutine_threadsafe(self.stop_threads(), loop))
+        signal.signal(signal.SIGTERM, lambda s, f: asyncio.run_coroutine_threadsafe(self.stop_threads(), loop))
         
-        threading.Thread(target=self.download_and_process).start()
-        threading.Thread(target=self.display_loop).start()
+        
+        await asyncio.gather(
+            self.download_and_process(),
+            self.display_loop(),
+        )
 
         
-    def display_loop(self):
-        if not self.running:
-            self.logger.info("Stopping display loop.")
-            self.display_manager.sleep()
-            return
-        try:
-            if time.time() - self._clearTime > self.config[ConfigKeys.CLEAR_INTERVAL.value]:
-                self.display_manager.clear()
-            self.data_lock.acquire()
-            if len(self.images) == 0:
-                self.logger.warning("No images to display.")
-            else:
-                if self._display_index >= len(self.images):
-                    self._display_index = 0
-                self.display_manager.display(self.images[self._display_index])
-                self._display_index += 1
-            self.data_lock.release()
-        except Exception as e:
-            self.logger.error(f"Error in display loop: {e}")
-        threading.Timer(self.config[ConfigKeys.PHOTO_INTERVAL.value], self.display_loop).start()
+    async def display_loop(self):
+        self.display_manager.init()
+        while self.running:
+            clear = time.time() - self._clear_time > self.config[ConfigKeys.CLEAR_INTERVAL.value]
+            next_image = time.time() - self._display_time > self.config[ConfigKeys.PHOTO_INTERVAL.value]
+            
+            if clear and next_image:
+                try:
+                    await asyncio.to_thread(self.display_manager.clear)
+                    self._clear_time = time.time()
+                except Exception as e:
+                    self.logger.error(f"Error clearing display: {e}")
+            
+            if next_image:
+                async with self.data_lock:
+                    if len(self.images) == 0:
+                        self.logger.warning("No images to display.")
+                    else:
+                        if self._display_index >= len(self.images):
+                            self._display_index = 0
+                        try:
+                            await asyncio.to_thread(self.display_manager.display, self.images[self._display_index])
+                            self._display_index += 1
+                            self._display_time = time.time()
+                        except Exception as e:
+                            self.logger.error(f"Error displaying image: {e}")
+            for a in range(self.config[ConfigKeys.PHOTO_INTERVAL.value]):
+                if not self.running:
+                    self.display_manager.sleep()
+                    break
+                await asyncio.sleep(1)
         
         
-    def download_and_process(self):
-        if not self.running:
-            self.logger.info("Stopping download and process.")
-            return
-        try:
-            # Check config hash
-            curHash = hash(frozenset(self.config))
-            with open(os.path.join(ConfigKeys.PHOTO_STORAGE.value, "config_hash"), "w+") as f:
-                oldHash = int(f.read())
-                if curHash != oldHash:
-                    f.write(str(curHash))
-                    self.logger.info("Config hash changed, removing processed images.")
-                    self.image_fetcher.purge_processed()
-            tempImages = self.image_fetcher.download_and_process()
-            self.data_lock.acquire()
-            self.images = tempImages
-            self.data_lock.release()
-        except Exception as e:
-            self.data_lock.release()
-            self.logger.error(f"Error downloading and processing images: {e}")
-            raise
-        threading.Timer(self.config[ConfigKeys.ALBUM_FETCH_INTERVAL.value], self.download_and_process).start()
-        
+    async def download_and_process(self):
+        while self.running:
+            try:
+                tempImages = await asyncio.to_thread(self.image_fetcher.download_and_process)
+                async with self.data_lock:
+                    self.images = tempImages
+            except Exception as e:
+                self.logger.error(f"Error downloading and processing images: {e}")
+                raise
+            for a in range(self.config[ConfigKeys.ALBUM_FETCH_INTERVAL.value]):
+                if not self.running:
+                    break
+                await asyncio.sleep(1)
 def main():
-    test = ImmichDisplayDaemon()
-    test.run()
+    daemon = ImmichDisplayDaemon()
+    asyncio.run(daemon.run())
 
 if __name__ == "__main__":
     main()
