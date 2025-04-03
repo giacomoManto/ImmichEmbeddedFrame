@@ -1,7 +1,6 @@
 import os
 from image_fetcher.immich import Immich
 from utils.logging_setup import setup_logger
-
 from pillow_heif import register_heif_opener
 from photo_processing.ImageProcessor import ImageProcessor
 from image_fetcher.base_search_handler import BaseSearchHandler
@@ -12,7 +11,7 @@ class ImageFetcher:
         self.server = server
         self.search_handler = search_handler
         self.processor = processor
-        self.asset_ids_and_extensions = {}
+        self.asset_ids_and_extensions: dict[str, str] = {}
         
         self.originals_path = os.path.join(data_path, "original")
         self.processed_path = os.path.join(data_path, "processed")
@@ -64,6 +63,14 @@ class ImageFetcher:
                     self.logger.debug(f"Removed {file_name + '.bmp'} from processed")
                 except Exception as e:
                     self.logger.error(f"Error removing file: {e}")
+                    
+    def purge_processed(self):
+        for photo in os.listdir(self.processed_path):
+            try:
+                os.remove(os.path.join(self.processed_path, photo))
+                self.logger.debug(f"Removed {photo} from processed")
+            except Exception as e:
+                self.logger.error(f"Error removing file: {e}")
                     
     def download(self):
         self.logger.info("Downloading assets from server")

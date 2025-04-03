@@ -13,3 +13,5 @@ clear_interval: 3600 # optional, in seconds defaults to 3600 (1 hour)
 photo_interval: 30 # optional, in seconds defaults to 60
 photo_storage: "./example/" # optional, defaults to ./cache/eink-daemon
 log_file: "/example.log" # optional, defaults to /var/log/eink-daemon.log
+ratio_mode: "crop" # optional, defaults to "crop"
+rotate: False # optional, defaults to False

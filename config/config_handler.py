@@ -16,6 +16,8 @@ class ConfigKeys(enum.Enum):
     PHOTO_INTERVAL = "photo_interval"
     PHOTO_STORAGE = "photo_storage"
     LOG_FILE = "log_file"
+    RATIO_MODE = "ratio_mode"
+    ROTATE = "rotate"
 
 def get_config(path = "config.yaml"):    
     # Load and parse the config.yaml file
@@ -32,7 +34,14 @@ def get_config(path = "config.yaml"):
     # Check for required keys
     required_keys = ["server_address", "x_api_key", "display_manager", "album_name"]
     optional_keys = ["backup_address"]
-    default_keys = {"album_fetch_interval": 60, "clear_interval": 3600, "photo_interval": 30, "photo_storage": "/var/cache/eink-daemon", "log_file": "/var/log/eink-daemon.log"}
+    default_keys = {"album_fetch_interval": 60, 
+                    "clear_interval": 3600, 
+                    "photo_interval": 30, 
+                    "photo_storage": "/var/cache/eink-daemon", 
+                    "log_file": "/var/log/eink-daemon.log",
+                    "rotate": False,
+                    "ratio_mode": "crop",
+                    }
     
     # Validate keys
     for key in required_keys:

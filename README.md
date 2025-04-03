@@ -1,6 +1,6 @@
 # Immich Embedded Frame
 
-Interfaces with immich api to pull, process, and display images for embedded devices.
+Interfaces with Immich api to pull, process, and display images for embedded devices.
 
 1. Various displays can be implemented by extending [BaseDisplayManager](display/base_display_manager.py) and adding the new display manager in [get_display_manager](display/get_display_manager.py).
 2. Similar situation with extending [photo processing](photo_processing/ImageProcessor.py) capabilities
